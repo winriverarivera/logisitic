@@ -19,6 +19,8 @@ import com.logistic.model.Bodegas;
 import com.logistic.model.RespuestaValidacion;
 import com.logistic.service.BodegasService;
 
+import sv.mh.dga.maa.apioracle.model.Usuario;
+
 
 
 
@@ -110,7 +112,40 @@ public class BodegasController {
 	    return response;
 	}	
 
-	
+	@RequestMapping(value = "/update", method = RequestMethod.POST)
+	public ResponseWrapper<Integer> update(@RequestBody Bodegas bodega, HttpServletRequest req) {
+		ResponseWrapper<Integer> response = new ResponseWrapper<Integer>();
+		RespuestaValidacion validacion = new RespuestaValidacion();
+		
+		// Extraer token
+				String token = req.getHeader("Authorization");
+				try {
+					//validacion = config.validar(token);
+					LOG.info("validacion" + validacion);
+
+					//if (validacion.isValido()) {
+						//if (opciones.permiso(validacion.getRol(), "/mantenimientoUsuario/update")) {
+							response.setResponse(data.update(bodega));
+						//} else {
+							//response.setErrorCode(String.valueOf(HttpStatus.FORBIDDEN.value()));
+							//response.setErrorMessage(
+							//		"Privilegios insuficientes - El usuario no tiene permisos para esta opción");
+							//LOG.error("403 - No tiene permiso para esta opción");
+						//}
+					//} else {
+						//response.setErrorCode(String.valueOf(HttpStatus.UNAUTHORIZED.value()));
+						//response.setErrorMessage("Token invalido - iniciar session de nuevo");
+						//LOG.error("401 - token invalido");
+					//}
+				} catch (Exception e) {//} catch (ServiceException e) {
+					response.setErrorCode(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()));
+					response.setErrorMessage(e.getMessage());
+					LOG.error("500 - " + e);
+				}	
+				
+	    return response;
+	 }
+
 	
 
 }

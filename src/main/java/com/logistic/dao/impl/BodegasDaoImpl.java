@@ -26,7 +26,7 @@ public class BodegasDaoImpl implements BodegasDao {
 	@Override
 	public Integer nextVal() {
 		// TODO Auto-generated method stub
-		Integer id = jdbcTemplate.queryForObject("SELECT max(ID_BODEGAS) FROM BODEGAS", Integer.class);
+		Integer id = jdbcTemplate.queryForObject("SELECT max(ID_BODEGA) + 1 FROM BODEGAS", Integer.class);
 		if(id.equals(null))
 			id = 1;
 		return id;
@@ -56,8 +56,8 @@ public class BodegasDaoImpl implements BodegasDao {
 		StringBuilder sql = new StringBuilder();
         sql.append(" UPDATE BODEGAS");
         sql.append(" SET DIRECCION             = ?,");
-        sql.append("     USUARIO_REGISTRO           = ?,");
-        sql.append("     FECHA_MODIFICACION                = ?");               
+        sql.append("     USUARIO_REGISTRA           = ?,");
+        sql.append("     FECHA_MODIFICA                = ?");               
         sql.append(" WHERE ID_BODEGA = ?");
         return jdbcTemplate.update(sql.toString(), data.getDireccion(),         		 
         		data.getUsuario_registra(),
