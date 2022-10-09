@@ -14,21 +14,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.logistic.common.ResponseWrapper;
-import com.logistic.common.ServiceException;
-import com.logistic.model.Bodegas;
+import com.logistic.model.Puertos_entrega;
 import com.logistic.model.RespuestaValidacion;
-import com.logistic.service.BodegasService;
+import com.logistic.service.Puertos_entregaService;
 
 @RestController
-@RequestMapping("/bodegas")
-public class BodegasController {
+@RequestMapping("/puertos_entrega")
+public class Puertos_entregaController {
 	Logger LOG = LoggerFactory.getLogger(BodegasController.class);
 	
 	@Autowired
-    private BodegasService data;
+	private Puertos_entregaService data;
 	
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public ResponseWrapper<Integer> getAll(@RequestBody Bodegas bodegas, HttpServletRequest req) {
+	public ResponseWrapper<Integer> getAll(@RequestBody Puertos_entrega puerto, HttpServletRequest req) {
 		ResponseWrapper<Integer> response = new ResponseWrapper<Integer>();
 		//RespuestaValidacion validacion = new RespuestaValidacion();
 		Integer resultado = new Integer(0);
@@ -41,7 +40,7 @@ public class BodegasController {
 
 			//if (validacion.isValido()) {
 				//if (opciones.permiso(validacion.getRol(), "/mantenimientoTipoCedula/save")) {
-					resultado = data.save(bodegas);
+					resultado = data.save(puerto);
 					if(resultado.intValue() > 0) {
 						response.setResponse(resultado);						
 					}else {
@@ -70,9 +69,9 @@ public class BodegasController {
 	    return response;
 	 }
 
-	@RequestMapping(value = "/findBodegas", method = RequestMethod.GET)
-	public ResponseWrapper<List<Bodegas>> findBodegas(HttpServletRequest req) {
-		ResponseWrapper<List<Bodegas>> response = new ResponseWrapper<List<Bodegas>>();
+	@RequestMapping(value = "/findPuertos", method = RequestMethod.GET)
+	public ResponseWrapper<List<Puertos_entrega>> findUsuarios(HttpServletRequest req) {
+		ResponseWrapper<List<Puertos_entrega>> response = new ResponseWrapper<List<Puertos_entrega>>();
 		RespuestaValidacion validacion = new RespuestaValidacion();			
 
 		// Extraer token
@@ -106,7 +105,7 @@ public class BodegasController {
 	}	
 
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public ResponseWrapper<Integer> update(@RequestBody Bodegas bodega, HttpServletRequest req) {
+	public ResponseWrapper<Integer> update(@RequestBody Puertos_entrega puerto, HttpServletRequest req) {
 		ResponseWrapper<Integer> response = new ResponseWrapper<Integer>();
 		RespuestaValidacion validacion = new RespuestaValidacion();
 		
@@ -118,7 +117,7 @@ public class BodegasController {
 
 					//if (validacion.isValido()) {
 						//if (opciones.permiso(validacion.getRol(), "/mantenimientoUsuario/update")) {
-							response.setResponse(data.update(bodega));
+							response.setResponse(data.update(puerto));
 						//} else {
 							//response.setErrorCode(String.valueOf(HttpStatus.FORBIDDEN.value()));
 							//response.setErrorMessage(
@@ -139,6 +138,5 @@ public class BodegasController {
 	    return response;
 	 }
 
-	
 
 }
