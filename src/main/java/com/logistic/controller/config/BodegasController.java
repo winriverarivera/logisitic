@@ -19,7 +19,6 @@ import com.logistic.model.Bodegas;
 import com.logistic.model.RespuestaValidacion;
 import com.logistic.service.BodegasService;
 
-import sv.mh.dga.maa.apioracle.model.Usuario;
 
 
 
