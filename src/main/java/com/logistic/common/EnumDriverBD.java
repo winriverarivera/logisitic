@@ -4,7 +4,7 @@ public enum EnumDriverBD {
 
 	ORACLEJDBCORACLEDRIVER("oracle.jdbc.OracleDriver"),
 	COMMICROSOFTSQLSERVERJDBCSQLSERVERDRIVER("com.microsoft.sqlserver.jdbc.SQLServerDriver"),
-	MYSQL("com.mysql.jdbc.Driver");
+	COMMYSQLCJJDBCDRIVER("com.mysql.jdbc.Driver");//COMMYSQLCJJDBCDRIVER
 
 	private String nombre;
 	
@@ -22,6 +22,8 @@ public enum EnumDriverBD {
 		        return "ORA";
 		    case COMMICROSOFTSQLSERVERJDBCSQLSERVERDRIVER:
 		        return "MSSQL";
+		    case COMMYSQLCJJDBCDRIVER:
+		    	return "MYSQL";
 		    default:
 		        return "";
 		}
