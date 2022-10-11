@@ -28,6 +28,7 @@ import springfox.documentation.swagger.web.UiConfiguration;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
+@EnableSwagger2
 public class LogisticApplication {
 
 	public static void main(String[] args) {
@@ -48,7 +49,7 @@ public class LogisticApplication {
 					.title("Person Service Api Documentation")
 					.description("Documentation automatically generated")
 					.version(model.getVersion())
-					.contact(new Contact("Piotr Mińkowski", "piotrminkowski.wordpress.com", "piotr.minkowski@gmail.com"));
+					.contact(new Contact("Edwin Rivera", "https://www.linkedin.com/in/edwin-moises-rivera-rivera", "winriverarivera@gmail.com"));
 			return new Docket(DocumentationType.SWAGGER_2).select()
 					.apis(RequestHandlerSelectors.basePackage("com.logistic.controller.config"))
 					.paths(PathSelectors.any()).build()
