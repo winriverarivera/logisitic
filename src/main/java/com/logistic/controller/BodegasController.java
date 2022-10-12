@@ -1,4 +1,4 @@
-package com.logistic.controller.config;
+package com.logistic.controller;
 
 import java.util.List;
 
@@ -14,33 +14,37 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.logistic.common.ResponseWrapper;
-import com.logistic.model.Puertos_entrega;
+import com.logistic.common.ServiceException;
+import com.logistic.model.Bodegas;
 import com.logistic.model.RespuestaValidacion;
-import com.logistic.service.Puertos_entregaService;
+import com.logistic.service.BodegasService;
+import com.logistic.service.impl.ValidarTokenService;
 
 @RestController
-@RequestMapping("/puertos_entrega")
-public class Puertos_entregaController {
+@RequestMapping("/bodegas")
+public class BodegasController {
 	Logger LOG = LoggerFactory.getLogger(BodegasController.class);
 	
 	@Autowired
-	private Puertos_entregaService data;
+    private BodegasService data;
+	@Autowired
+	private ValidarTokenService config;
 	
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public ResponseWrapper<Integer> getAll(@RequestBody Puertos_entrega puerto, HttpServletRequest req) {
+	public ResponseWrapper<Integer> getAll(@RequestBody Bodegas bodegas, HttpServletRequest req) {
 		ResponseWrapper<Integer> response = new ResponseWrapper<Integer>();
-		//RespuestaValidacion validacion = new RespuestaValidacion();
+		RespuestaValidacion validacion = new RespuestaValidacion();
 		Integer resultado = new Integer(0);
 
 		// Extraer token
 		String token = req.getHeader("Authorization");
 		try {
-			//validacion = config.validar(token);
-			//LOG.info("validacion" + validacion);
+			validacion = config.validar(token);
+			LOG.info("validacion" + validacion);
 
-			//if (validacion.isValido()) {
+			if (validacion.isValido()) {
 				//if (opciones.permiso(validacion.getRol(), "/mantenimientoTipoCedula/save")) {
-					resultado = data.save(puerto);
+					resultado = data.save(bodegas);
 					if(resultado.intValue() > 0) {
 						response.setResponse(resultado);						
 					}else {
@@ -49,12 +53,12 @@ public class Puertos_entregaController {
 								"Error al guardar");
 						LOG.error("500 - El registro no se insertó ");
 					}					
-				//} else {
-					//response.setErrorCode(String.valueOf(HttpStatus.FORBIDDEN.value()));
-					//response.setErrorMessage(
-						//	"Privilegios insuficientes - El usuario no tiene permisos para esta opción");
-					//LOG.error("403 - No tiene permiso para esta opción");
-				//}
+				} else {
+					response.setErrorCode(String.valueOf(HttpStatus.UNAUTHORIZED.value()));
+					response.setErrorMessage(
+							"Privilegios insuficientes - Credenciales invalidas");
+					LOG.error("401 - Credenciales invalidas");
+				}
 			//} else {
 				//response.setErrorCode(String.valueOf(HttpStatus.UNAUTHORIZED.value()));
 				//response.setErrorMessage("Token invalido - iniciar session de nuevo");
@@ -69,18 +73,18 @@ public class Puertos_entregaController {
 	    return response;
 	 }
 
-	@RequestMapping(value = "/findPuertos", method = RequestMethod.GET)
-	public ResponseWrapper<List<Puertos_entrega>> findUsuarios(HttpServletRequest req) {
-		ResponseWrapper<List<Puertos_entrega>> response = new ResponseWrapper<List<Puertos_entrega>>();
+	@RequestMapping(value = "/findBodegas", method = RequestMethod.GET)
+	public ResponseWrapper<List<Bodegas>> findBodegas(HttpServletRequest req) {
+		ResponseWrapper<List<Bodegas>> response = new ResponseWrapper<List<Bodegas>>();
 		RespuestaValidacion validacion = new RespuestaValidacion();			
 
 		// Extraer token
 		String token = req.getHeader("Authorization");
 		try {
-			//validacion = config.validar(token);
-			//LOG.info("validacion" + validacion);
+			validacion = config.validar(token);
+			LOG.info("validacion" + validacion);
 
-			//if (validacion.isValido()) {
+			if (validacion.isValido()) {
 				//if (opciones.permiso(validacion.getRol(), "/mantenimientoUsuario/findUsuarios")) {
 					response.setResponse(data.getAll());
 				//} else {
@@ -89,11 +93,11 @@ public class Puertos_entregaController {
 					//		"Privilegios insuficientes - El usuario no tiene permisos para esta opción");
 					//LOG.error("403 - No tiene permiso para esta opción");
 				//}
-			//} else {
-				//response.setErrorCode(String.valueOf(HttpStatus.UNAUTHORIZED.value()));
-				//response.setErrorMessage("Token invalido - iniciar session de nuevo");
-				//LOG.error("401 - token invalido");
-			//}
+			} else {
+				response.setErrorCode(String.valueOf(HttpStatus.UNAUTHORIZED.value()));
+				response.setErrorMessage("Token invalido - iniciar session de nuevo");
+				LOG.error("401 - token invalido");
+			}
 		//} catch (ServiceException e) {
 		} catch (Exception e) {
 			response.setErrorCode(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()));
@@ -105,30 +109,31 @@ public class Puertos_entregaController {
 	}	
 
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public ResponseWrapper<Integer> update(@RequestBody Puertos_entrega puerto, HttpServletRequest req) {
+	public ResponseWrapper<Integer> update(@RequestBody Bodegas bodega, HttpServletRequest req) {
 		ResponseWrapper<Integer> response = new ResponseWrapper<Integer>();
 		RespuestaValidacion validacion = new RespuestaValidacion();
 		
 		// Extraer token
 				String token = req.getHeader("Authorization");
+				LOG.info("token: "+token);
 				try {
-					//validacion = config.validar(token);
+					validacion = config.validar(token);
 					LOG.info("validacion" + validacion);
 
-					//if (validacion.isValido()) {
+					if (validacion.isValido()) {
 						//if (opciones.permiso(validacion.getRol(), "/mantenimientoUsuario/update")) {
-							response.setResponse(data.update(puerto));
+							response.setResponse(data.update(bodega));
 						//} else {
 							//response.setErrorCode(String.valueOf(HttpStatus.FORBIDDEN.value()));
 							//response.setErrorMessage(
 							//		"Privilegios insuficientes - El usuario no tiene permisos para esta opción");
 							//LOG.error("403 - No tiene permiso para esta opción");
 						//}
-					//} else {
-						//response.setErrorCode(String.valueOf(HttpStatus.UNAUTHORIZED.value()));
-						//response.setErrorMessage("Token invalido - iniciar session de nuevo");
-						//LOG.error("401 - token invalido");
-					//}
+					} else {
+						response.setErrorCode(String.valueOf(HttpStatus.UNAUTHORIZED.value()));
+						response.setErrorMessage("Token invalido - iniciar session de nuevo");
+						LOG.error("401 - token invalido");
+					}
 				} catch (Exception e) {//} catch (ServiceException e) {
 					response.setErrorCode(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()));
 					response.setErrorMessage(e.getMessage());
@@ -138,5 +143,6 @@ public class Puertos_entregaController {
 	    return response;
 	 }
 
+	
 
 }

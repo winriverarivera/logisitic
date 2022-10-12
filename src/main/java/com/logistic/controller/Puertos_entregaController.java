@@ -1,4 +1,4 @@
-package com.logistic.controller.config;
+package com.logistic.controller;
 
 import java.util.List;
 
@@ -14,21 +14,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.logistic.common.ResponseWrapper;
-import com.logistic.model.Bodegas;
+import com.logistic.model.Puertos_entrega;
 import com.logistic.model.RespuestaValidacion;
-import com.logistic.model.Usuario;
-import com.logistic.service.UsuarioService;
+import com.logistic.service.Puertos_entregaService;
 
 @RestController
-@RequestMapping("/usuario")
-public class UsuarioController {
+@RequestMapping("/puertos_entrega")
+public class Puertos_entregaController {
 	Logger LOG = LoggerFactory.getLogger(BodegasController.class);
 	
 	@Autowired
-	private UsuarioService data;
+	private Puertos_entregaService data;
 	
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public ResponseWrapper<Integer> getAll(@RequestBody Usuario usuario, HttpServletRequest req) {
+	public ResponseWrapper<Integer> getAll(@RequestBody Puertos_entrega puerto, HttpServletRequest req) {
 		ResponseWrapper<Integer> response = new ResponseWrapper<Integer>();
 		//RespuestaValidacion validacion = new RespuestaValidacion();
 		Integer resultado = new Integer(0);
@@ -41,7 +40,7 @@ public class UsuarioController {
 
 			//if (validacion.isValido()) {
 				//if (opciones.permiso(validacion.getRol(), "/mantenimientoTipoCedula/save")) {
-					resultado = data.save(usuario);
+					resultado = data.save(puerto);
 					if(resultado.intValue() > 0) {
 						response.setResponse(resultado);						
 					}else {
@@ -70,9 +69,9 @@ public class UsuarioController {
 	    return response;
 	 }
 
-	@RequestMapping(value = "/findUsuarios", method = RequestMethod.GET)
-	public ResponseWrapper<List<Usuario>> findUsuarios(HttpServletRequest req) {
-		ResponseWrapper<List<Usuario>> response = new ResponseWrapper<List<Usuario>>();
+	@RequestMapping(value = "/findPuertos", method = RequestMethod.GET)
+	public ResponseWrapper<List<Puertos_entrega>> findUsuarios(HttpServletRequest req) {
+		ResponseWrapper<List<Puertos_entrega>> response = new ResponseWrapper<List<Puertos_entrega>>();
 		RespuestaValidacion validacion = new RespuestaValidacion();			
 
 		// Extraer token
@@ -106,7 +105,7 @@ public class UsuarioController {
 	}	
 
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public ResponseWrapper<Integer> update(@RequestBody Usuario usuario, HttpServletRequest req) {
+	public ResponseWrapper<Integer> update(@RequestBody Puertos_entrega puerto, HttpServletRequest req) {
 		ResponseWrapper<Integer> response = new ResponseWrapper<Integer>();
 		RespuestaValidacion validacion = new RespuestaValidacion();
 		
@@ -118,7 +117,7 @@ public class UsuarioController {
 
 					//if (validacion.isValido()) {
 						//if (opciones.permiso(validacion.getRol(), "/mantenimientoUsuario/update")) {
-							response.setResponse(data.update(usuario));
+							response.setResponse(data.update(puerto));
 						//} else {
 							//response.setErrorCode(String.valueOf(HttpStatus.FORBIDDEN.value()));
 							//response.setErrorMessage(

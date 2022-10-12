@@ -1,4 +1,4 @@
-package com.logistic.controller.config;
+package com.logistic.controller;
 
 import java.util.List;
 
@@ -15,20 +15,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.logistic.common.ResponseWrapper;
 import com.logistic.model.Bodegas;
-import com.logistic.model.Logistica_maritima;
 import com.logistic.model.RespuestaValidacion;
-import com.logistic.service.Logistica_maritimaService;
+import com.logistic.model.Usuario;
+import com.logistic.service.UsuarioService;
 
 @RestController
-@RequestMapping("/logisitica_maritima")
-public class Logistica_maritimaController {
+@RequestMapping("/usuario")
+public class UsuarioController {
 	Logger LOG = LoggerFactory.getLogger(BodegasController.class);
 	
 	@Autowired
-	private Logistica_maritimaService data;
+	private UsuarioService data;
 	
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public ResponseWrapper<Integer> getAll(@RequestBody Logistica_maritima maritima, HttpServletRequest req) {
+	public ResponseWrapper<Integer> getAll(@RequestBody Usuario usuario, HttpServletRequest req) {
 		ResponseWrapper<Integer> response = new ResponseWrapper<Integer>();
 		//RespuestaValidacion validacion = new RespuestaValidacion();
 		Integer resultado = new Integer(0);
@@ -41,7 +41,7 @@ public class Logistica_maritimaController {
 
 			//if (validacion.isValido()) {
 				//if (opciones.permiso(validacion.getRol(), "/mantenimientoTipoCedula/save")) {
-					resultado = data.save(maritima);
+					resultado = data.save(usuario);
 					if(resultado.intValue() > 0) {
 						response.setResponse(resultado);						
 					}else {
@@ -70,9 +70,9 @@ public class Logistica_maritimaController {
 	    return response;
 	 }
 
-	@RequestMapping(value = "/findLogistica_maritima", method = RequestMethod.GET)
-	public ResponseWrapper<List<Logistica_maritima>> findLogistica_maritima(HttpServletRequest req) {
-		ResponseWrapper<List<Logistica_maritima>> response = new ResponseWrapper<List<Logistica_maritima>>();
+	@RequestMapping(value = "/findUsuarios", method = RequestMethod.GET)
+	public ResponseWrapper<List<Usuario>> findUsuarios(HttpServletRequest req) {
+		ResponseWrapper<List<Usuario>> response = new ResponseWrapper<List<Usuario>>();
 		RespuestaValidacion validacion = new RespuestaValidacion();			
 
 		// Extraer token
@@ -106,7 +106,7 @@ public class Logistica_maritimaController {
 	}	
 
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public ResponseWrapper<Integer> update(@RequestBody Logistica_maritima maritima, HttpServletRequest req) {
+	public ResponseWrapper<Integer> update(@RequestBody Usuario usuario, HttpServletRequest req) {
 		ResponseWrapper<Integer> response = new ResponseWrapper<Integer>();
 		RespuestaValidacion validacion = new RespuestaValidacion();
 		
@@ -118,7 +118,7 @@ public class Logistica_maritimaController {
 
 					//if (validacion.isValido()) {
 						//if (opciones.permiso(validacion.getRol(), "/mantenimientoUsuario/update")) {
-							response.setResponse(data.update(maritima));
+							response.setResponse(data.update(usuario));
 						//} else {
 							//response.setErrorCode(String.valueOf(HttpStatus.FORBIDDEN.value()));
 							//response.setErrorMessage(
